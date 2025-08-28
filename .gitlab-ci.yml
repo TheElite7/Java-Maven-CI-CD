@@ -61,13 +61,15 @@ docker-deploy:
     - docker-push
   image:
     name: bitnami/kubectl:latest
-    entrypoint: [""]
   before_script:
     - apt-get update && apt-get install -y sed
     - |
       sed -i "s|image:.*|image: anand2807/maven-war-repo:$CI_PIPELINE_ID|" kubernetes/java_maven_deploy.yaml
   script:
     - kubectl config use-context learn-group1983734/vprofile-java-app:maven-agent
+    - cat kubernetes/java_maven_deploy.yaml
+    - cat kubernetes/java_maven_secret.yaml
+    - cat kubernetes/java_maven_service.yaml
     - kubectl apply -f kubernetes/*
     - kubectl rollout status deployment/java_maven_deploy.yaml
     - sleep 70

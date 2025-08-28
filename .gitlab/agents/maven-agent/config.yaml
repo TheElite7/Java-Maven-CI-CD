@@ -1,0 +1,9 @@
+ci_access:
+  projects:
+    - id: learn-group1983734/vprofile-java-app
+
+user_access:
+  access_as:
+    agent: {}
+  projects:
+    - id: learn-group1983734/vprofile-java-app

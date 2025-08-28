@@ -65,11 +65,12 @@ docker-deploy:
   before_script:
     - apt-get update && apt-get install -y sed
     - |
-      sed -i "s|image:.*|image: anand2807/maven-war-repo:$CI_PIPELINE_ID|" kubernetes/deployment.yaml
+      sed -i "s|image:.*|image: anand2807/maven-war-repo:$CI_PIPELINE_ID|" kubernetes/java_maven_deploy.yaml
   script:
     - kubectl config use-context learn-group1983734/vprofile-java-app:maven-agent
     - kubectl apply -f kubernetes/*
-    - kubectl rollout status deployment/<your-deployment-name> --timeout=120s
+    - kubectl rollout status deployment/java_maven_deploy.yaml
+    - sleep 70
     - kubectl get pods
 
   

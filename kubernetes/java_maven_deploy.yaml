@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: java-maven
-        image: docker.io/anand2807/maven-war-repo:2004765548
+        image: docker.io/anand2807/maven-war-repo:$CI_PIPELINE_ID
         ports:
           - containerPort: 8080
       imagePullSecrets:

@@ -3,6 +3,7 @@ stages:
   - image-build
   - test
   - push
+  - deploy
 
 variables:
   RUNIMG: images
@@ -52,3 +53,23 @@ docker-push:
     - docker login -u $username_demorepo -p $password_demorepo
     - docker push anand2807/maven-war-repo:$CI_PIPELINE_ID
     - docker $RUNIMG
+    
+
+docker-deploy:
+  stage: deploy
+  needs:
+    - docker-push
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  before_script:
+    - apt-get update && apt-get install -y sed
+    - |
+      sed -i "s|image:.*|image: anand2807/maven-war-repo:$CI_PIPELINE_ID|" kubernetes/deployment.yaml
+  script:
+    - kubectl config use-context learn-group1983734/vprofile-java-app:maven-agent
+    - kubectl apply -f kubernetes/*
+    - kubectl rollout status deployment/<your-deployment-name> --timeout=120s
+    - kubectl get pods
+
+  

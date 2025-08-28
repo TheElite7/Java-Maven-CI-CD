@@ -1,0 +1,54 @@
+stages:
+  - build
+  - image-build
+  - test
+  - push
+
+variables:
+  RUNIMG: images
+
+image: docker:cli
+services:
+  - docker:dind
+
+docker-build:
+  image: maven
+  stage: build
+  script:
+    - mvn clean package
+    - ls
+  artifacts:
+    paths:
+      - "target"
+
+docker-image-crt:
+  variables:
+    IMG: vimg
+  stage: image-build
+  script:
+    - docker build -t $IMG:$CI_PIPELINE_ID .
+    - docker $RUNIMG
+    - mkdir demo
+    - docker save $IMG > demo/vimg.tar
+    - pwd
+    - ls 
+  artifacts:
+    paths:
+      - "demo"
+
+docker-test:
+  stage: test
+  script:
+    - docker load -i demo/vimg.tar
+    - docker $RUNIMG
+    - docker run -d -p 8081:8080 vimg:$CI_PIPELINE_ID
+    - docker ps
+docker-push:
+  stage: push
+  script:
+    - docker load -i demo/vimg.tar
+    - docker $RUNIMG
+    - docker tag vimg:$CI_PIPELINE_ID anand2807/maven-war-repo:$CI_PIPELINE_ID
+    - docker login -u $username_demorepo -p $password_demorepo
+    - docker push anand2807/maven-war-repo:$CI_PIPELINE_ID
+    - docker $RUNIMG

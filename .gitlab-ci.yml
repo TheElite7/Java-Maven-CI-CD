@@ -71,7 +71,7 @@ docker-deploy:
     - cat kubernetes/java_maven_service.yaml
     - cat kubernetes/java_maven_deploy.yaml
     - kubectl apply -f kubernetes/
-    - kubectl rollout status deployment/java_maven_deploy.yaml
+    # - kubectl rollout status deployment/java_maven_deploy.yaml
     - sleep 70
     - kubectl get pods
 

@@ -36,13 +36,13 @@ docker-image-crt:
     paths:
       - "demo"
 
-# docker-test:
-#   stage: test
-#   script:
-#     - docker load -i demo/vimg.tar
-#     - docker $RUNIMG
-#     - docker run -d -p 8081:8080 vimg:$CI_PIPELINE_ID
-#     - docker ps
+docker-test:
+  stage: test
+  script:
+    - docker load -i demo/vimg.tar
+    - docker $RUNIMG
+    - docker run -d -p 8081:8080 vimg:$CI_PIPELINE_ID
+    - docker ps
 docker-push:
   stage: push
   script:
@@ -76,3 +76,4 @@ docker-deploy:
     - kubectl get pods
 
   
+

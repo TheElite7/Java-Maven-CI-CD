@@ -56,24 +56,22 @@ docker-push:
 
 docker-deploy:
   stage: deploy
-  needs:
-    - docker-push
-  image:
-    name: bitnami/kubectl:latest
-    entrypoint: [""]
+  image: ubuntu
   before_script:
-    - apt-get update && apt-get install -y sed
+    - apt update && apt install git -y
+    - apt install sed -y
+  script:
     - |
       sed -i "s|image:.*|image: anand2807/maven-war-repo:$CI_PIPELINE_ID|" kubernetes/java_maven_deploy.yaml
-  script:
-    - kubectl config use-context learn-group1983734/vprofile-java-app:maven-agent
-    - cat kubernetes/java_maven_secret.yaml
-    - cat kubernetes/java_maven_service.yaml
-    - cat kubernetes/java_maven_deploy.yaml
-    - kubectl apply -f kubernetes/
-    # - kubectl rollout status deployment/java_maven_deploy.yaml
-    - sleep 70
-    - kubectl get pods
+    - git config --global user.name "ananthselvam956"
+    - git config --global user.email "ananthselvam956@gmail.com"
+    - git remote set-url origin "https://oauth2:$token@gitlab.com/ananthselvam956/vprofile-java-maven.git"
+    - git remote -v
+    - git checkout -B main
+    - git add kubernetes/java_maven_deploy.yaml
+    - git commit -m "Image tag has been changed $CI_PIPELINE_ID [skip ci]"
+    - git push origin main
 
   
+
 

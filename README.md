@@ -1,7 +1,7 @@
-## Java Maven Project
+# Java Maven Project
 
 
-Tools:
+**Tools:**
 
 + Kubernetes
 + Docker
@@ -10,7 +10,7 @@ Tools:
 + GitLab
 
 
-Summary:
+**Summary:**
 + The source code convert into .war file.
 + Then build the docker image.
 + Test the application.

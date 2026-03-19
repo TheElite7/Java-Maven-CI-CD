@@ -8,6 +8,7 @@
 + Maven
 + ArgoCD
 + GitLab
++ Cloud - AWS
 
 
 **Summary:**

@@ -4,7 +4,7 @@ stages:
   - image-build
   - push
   - deploy
-
+  
 variables:
   RUNIMG: images
 
@@ -44,6 +44,7 @@ docker-test:
     - docker $RUNIMG
     - docker run -d -p 8081:8080 vimg:$CI_PIPELINE_ID
     - docker ps
+
 docker-push:
   stage: push
   script:
@@ -72,7 +73,3 @@ docker-deploy:
     - git add kubernetes/java_maven_deploy.yaml
     - git commit -m "Image tag has been changed $CI_PIPELINE_ID [skip ci]"
     - git push origin main
-
-  
-
-
